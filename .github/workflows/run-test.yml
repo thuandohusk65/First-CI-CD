@@ -1,0 +1,10 @@
+name: Run Unit Test
+on: push
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - name: Print Hello World
+        run: echo "Hello World CI/CD!"
+      - name: Print Goodbye
+        run: echo "Done - Goodbye!"
