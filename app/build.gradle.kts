@@ -50,6 +50,25 @@ android {
     }
 }
 
+tasks.register<Test>("runExampleUnitTest") {
+    // Set the test class to execute
+    filter {
+        includeTestsMatching("dev.keego.firstci_cd.ExampleUnitTest")
+    }
+
+    // Configure the test environment if necessary
+    testClassesDirs = files("$buildDir/tmp/kotlin-classes/debugUnitTest")
+    classpath = files("$buildDir/intermediates/javac/debugUnitTest/classes")
+    outputs.upToDateWhen { false } // Always run the task
+}
+
+// Make sure the custom task is run after the tests are compiled
+//tasks.named("compileDebugUnitTestKotlin") {
+//    finalizedBy("runExampleUnitTest")
+//}
+
+
+
 dependencies {
 
     implementation(libs.core.ktx)
