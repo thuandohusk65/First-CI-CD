@@ -2,6 +2,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.googleServices)
+    alias(libs.plugins.firebaseDistribution)
 }
 
 android {
@@ -21,7 +23,43 @@ android {
         }
     }
 
+    applicationVariants.configureEach {
+        if (name.contains("debug")) {
+            tasks.register("publish${name.capitalize()}") {
+                dependsOn(
+                    "assemble${this@configureEach.name.capitalize()}",
+                    "appDistributionUpload${this@configureEach.name.capitalize()}"
+                )
+            }
+        }
+//        else {
+//            variant.mergedFlavor.applicationId = "keego.volumebooster.soundbooster.soundspeaker"
+//            tasks.register("publish${variant.name.capitalize()}") { dependsOn("assemble${variant.name.capitalize()}", "appDistributionUpload${variant.name.capitalize()}") }
+//        }
+//        tasks.named("publish${variant.name.capitalize()}") {
+//            doLast {
+//                def botToken = "xoxb-4958383161424-4962139707587-2H7o3UAsBRYSw6ovRkA3kMmf"
+//                def channelId = "T04U6B94RCG"
+// //                println("Uploading ${variant.outputs.first().outputFile} to slack")
+// //                String message = "${variant.name.contains("debug") ? "🪲" : "📦"} *${variant.name.toUpperCase()}* (${defaultConfig.versionCode}) ${defaultConfig.versionName} uploaded to App Distribution!"
+// //                sendApkToSlack(botToken, channelId, variant.outputs.first().outputFile, message)
+// //                println(message)
+//            }
+//        }
+    }
+
     buildTypes {
+        debug {
+            isDebuggable = true
+            isMinifyEnabled = false
+            isShrinkResources = false
+//            signingConfig = signingConfigs.debug
+            firebaseAppDistribution {
+                artifactType = "APK"
+                releaseNotesFile = "$rootDir/app/release_note.txt"
+                serviceCredentialsFile = "$rootDir/app/first-ci-cd-0db6e288630d.json"
+            }
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -63,11 +101,9 @@ tasks.register<Test>("runExampleUnitTest") {
 }
 
 // Make sure the custom task is run after the tests are compiled
-//tasks.named("compileDebugUnitTestKotlin") {
+// tasks.named("compileDebugUnitTestKotlin") {
 //    finalizedBy("runExampleUnitTest")
-//}
-
-
+// }
 
 dependencies {
 
@@ -79,6 +115,8 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
+    implementation(platform(libs.firebase.bom))
+    implementation(platform(libs.firebase.analytics))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

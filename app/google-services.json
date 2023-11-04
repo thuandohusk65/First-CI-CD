@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "732868719650",
+    "project_id": "first-ci-cd",
+    "storage_bucket": "first-ci-cd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:732868719650:android:83cc81419bb330901e067b",
+        "android_client_info": {
+          "package_name": "dev.keego.firstci_cd"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfFFJfui459JFxERkb6PkN2VNs985IVtE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
