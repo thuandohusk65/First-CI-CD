@@ -1,8 +1,8 @@
 name: Test and Deploy Firebase Distribution
 on:
-  pull_request:
-    branches:
-      - develop
+#  pull_request:
+#    branches:
+#      - develop
 jobs:
   test:
     runs-on: windows-latest
