@@ -48,7 +48,12 @@ jobs:
           distribution: 'zulu' # See 'Supported distributions' for available options
           java-version: '17'
           cache: 'gradle'
-      # Run Tests Build
-      - name: Deploy
+      - name: Download APK artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: apk-debug-artifact
+      - name: Output contents
+        run: ls
+      - name: Upload file to Firebase Distribution
 #        run: ./gradlew 'app:appDistributionUploadDebug'
         run: echo "nguoi toi che toi deo an dc gi"
