@@ -1,0 +1,32 @@
+name: Test and Deploy Firebase Distribution
+on:
+#  pull_request:
+#    branches:
+#      - develop
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set Up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu' # See 'Supported distributions' for available options
+          java-version: '17'
+          cache: 'gradle'
+      # Run Tests Build
+      - name: Run gradle tests
+        run: ./gradlew test
+  deploy:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set Up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu' # See 'Supported distributions' for available options
+          java-version: '17'
+          cache: 'gradle'
+      # Run Tests Build
+      - name: Deploy
+        run: ./gradlew 'app:publishDebug'

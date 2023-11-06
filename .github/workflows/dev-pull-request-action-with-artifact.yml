@@ -1,0 +1,59 @@
+name: Test, Build with artifact and Deploy Firebase Distribution
+on:
+  pull_request:
+    branches:
+      - develop
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set Up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu' # See 'Supported distributions' for available options
+          java-version: '17'
+          cache: 'gradle'
+      # Run Tests Build
+      - name: Run gradle tests
+        run: ./gradlew test
+  build:
+    needs: test
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set Up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu' # See 'Supported distributions' for available options
+          java-version: '17'
+          cache: 'gradle'
+      # Run Tests Build
+      - name: Run gradle tests
+        run: './gradlew app:assembleDebug'
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: apk-debug-artifact
+          path:
+            app/build/outputs/apk/
+  deploy:
+    needs: build
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set Up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu' # See 'Supported distributions' for available options
+          java-version: '17'
+          cache: 'gradle'
+      - name: Download APK artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: apk-debug-artifact
+      - name: Output contents
+        run: ls
+      - name: Upload file to Firebase Distribution
+#        run: ./gradlew 'app:appDistributionUploadDebug'
+        run: echo "nguoi toi che toi deo an dc gi"
